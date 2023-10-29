@@ -7,7 +7,7 @@ rails g model Provider name full_name
 rails g model Country name
 rails g model Plant name
 rails g model ProductType name
-rails g model Product name art razd sor price:decimal price_buy:decimal code:integer provider country plant ean13
+rails g model Product name art razd sor price:decimal price_buy:decimal code:integer provider:references country:references plant:references ean13
 
 не забыть делать при импорте проверку на завод="" и страна=""
 
