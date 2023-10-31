@@ -11,7 +11,7 @@ rails g model Product name art razd sor price:decimal price_buy:decimal code:int
 
 rails g model Shop name
 rails g model DiscountCard name
-
+rails g model User name
 
 
 
