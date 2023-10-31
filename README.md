@@ -12,6 +12,8 @@ rails g model Product name art razd sor price:decimal price_buy:decimal code:int
 rails g model Shop name
 rails g model DiscountCard name
 rails g model User name
+rails g model OperationType name multiplier_cash:integer multiplier_quantity:integer
+rails g model Operation created:datetime product:references quantity:decimal sale_price:decimal discount_percent:integer operation_type:references user:references shop:references
 
 
 
