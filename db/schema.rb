@@ -10,12 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_29_164707) do
+ActiveRecord::Schema.define(version: 2023_10_31_114130) do
 
   create_table "countries", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discount_cards", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "operation_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "multiplier_cash", null: false
+    t.integer "multiplier_quantity", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_operation_types_on_name", unique: true
+  end
+
+  create_table "operations", force: :cascade do |t|
+    t.datetime "created"
+    t.integer "product_id", null: false
+    t.decimal "quantity", precision: 10, scale: 2, null: false
+    t.decimal "sale_price", precision: 10, scale: 2, null: false
+    t.integer "discount_percent", null: false
+    t.integer "operation_type_id", null: false
+    t.integer "user_id", null: false
+    t.integer "shop_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["operation_type_id"], name: "index_operations_on_operation_type_id"
+    t.index ["product_id"], name: "index_operations_on_product_id"
+    t.index ["shop_id"], name: "index_operations_on_shop_id"
+    t.index ["user_id"], name: "index_operations_on_user_id"
   end
 
   create_table "plants", force: :cascade do |t|
@@ -56,6 +88,24 @@ ActiveRecord::Schema.define(version: 2023_10_29_164707) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "shops", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_shops_on_name", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_users_on_name", unique: true
+  end
+
+  add_foreign_key "operations", "operation_types"
+  add_foreign_key "operations", "products"
+  add_foreign_key "operations", "shops"
+  add_foreign_key "operations", "users"
   add_foreign_key "products", "countries"
   add_foreign_key "products", "plants"
   add_foreign_key "products", "providers"
