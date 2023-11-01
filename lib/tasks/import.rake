@@ -1,6 +1,8 @@
 namespace :import do
   desc "Import from sklad.xlsx"
   task product_from_sklad: :environment do
+    abort "Отключил, чтобы не прогнать по-запаре"
+
     Rails.logger.error "начал в #{Time.now}"
 
     sheet = Roo::Excelx.new("/Users/kj/Downloads/sklad.xlsm")
@@ -60,8 +62,6 @@ namespace :import do
   end
 
 
-
-
   desc "Import from *_*.log"
   task from_log: :environment do
     Dir["/Volumes/macOS/_sunlab/work/Sklad/Log/*_*.log"].each do |filename|
@@ -69,18 +69,17 @@ namespace :import do
 
       File.readlines(filename, chomp: true).each do |line|
         # получить переменные
-        sale = line.split(',')
-        date = DateTime.parse(sale[0])
+        operation = line.split(',')
+        date = DateTime.parse(operation[0])
         puts date
         # заполнить модели
         # сохранить
       end
 
 
-      abort
+      abort "как-то так"
     end
   end
-
 
 
   desc "Import users from sklad.xlsx"
@@ -89,60 +88,39 @@ namespace :import do
     sheet.default_sheet = 'Пароли'
 
     sheet.each_with_index(name: 'Кужахметов Олег', password: '6957995') do |hash, index|
-      debugger
-      user = User.find_or_create_by!(id: index)
-      
-      User.where(name: hash[:name]).first_or_initialize.tap do |user|
+      puts "#{index + 1}. #{hash[:name]}"
+      User.where(id: index + 1).first_or_initialize.tap do |user|
+        next unless user.new_record?
         user.name = hash[:name]
-
-        user.email = "#{next_id}@sunlab.ru"
-
-        user.password = hash[:password]
-        while user.password.size < 6
-          user.password += hash[:password]
-        end
-
-        begin
-          user.save!
-        rescue ActiveRecord::RecordInvalid => error
-          puts "#{error.message}"
-          debugger
-          Rails.logger.error "#{error.message}"
-        end
+        user.save!
       end
+
     end
     sheet.close
-    Rails.logger.error "я кончил"
   end
 
+  desc "Import OperationType from sklad_prg.xlsx"
+  task operation_types_from_sklad_prg: :environment do
+    sheet = Roo::Excelx.new("/Users/kj/Downloads/sklad_prg.xlsm")
+    # sheet.default_sheet = 'Пароли'
 
+    sheet.each(id: 'код', name: 'сокр.', multiplier_cash: 'множ налички', multiplier_quantity: 'множ остатка') do |hash|
+      next if hash[:name] == 'сокр.'
 
+      puts "#{hash[:id]} - #{hash[:name]}"
+      OperationType.where(id: hash[:id]).first_or_initialize.tap do |operation_type|
+        next unless operation_type.new_record?
 
-  desc "Import from ods"
-  task ods: :environment do
-    ods = Roo::OpenOffice.new(Rails.root.join("db", "xls", "1570-0504.ods"))
+        operation_type.name = hash[:name]
+        operation_type.multiplier_cash = hash[:multiplier_cash]
+        operation_type.multiplier_quantity = hash[:multiplier_quantity]
 
-    ods.each(name: 'Наименование', art: 'Артикул', razd: 'Разделка', price: 'Ценамагазина', code: 'код') do |hash|
-      if hash[:name] != 'Наименование'
-        # делаем или ищем тип
-        # user_type = UserType.create_or_find_by!(name: hash[:user_type])
-
-        Tovar.where(code: hash[:code]).first_or_initialize.tap do |tovar|
-          # это tovar.user_type.id = user_type.id
-          # tovar.user_type = user_type
-          tovar.name = hash[:name]
-          tovar.art = hash[:art] unless hash[:art].nil?
-          tovar.razd = hash[:razd] unless hash[:razd].nil?
-          tovar.price = hash[:price]
-          tovar.code = hash[:code]
-          tovar.save!
-        rescue ActiveRecord::RecordInvalid => error
-          debugger
-          Rails.logger.error error.message
-          ods.close
-        end
+        operation_type.save!
       end
+
     end
-    ods.close
+    sheet.close
   end
+
+
 end

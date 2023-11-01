@@ -14,6 +14,12 @@ rails g model DiscountCard name
 rails g model User name
 rails g model OperationType name multiplier_cash:integer multiplier_quantity:integer
 rails g model Operation created:datetime product:references quantity:decimal sale_price:decimal discount_percent:integer operation_type:references user:references shop:references
+rails g model DiscoCard name
+rails g model CashRegister name
+
+rails g migration AddDetailsToOperation disco_card:references cash_register_id:references rest_before:decimal
+
+
 
 
 

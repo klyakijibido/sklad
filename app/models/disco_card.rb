@@ -1,0 +1,2 @@
+class DiscoCard < ApplicationRecord
+end
