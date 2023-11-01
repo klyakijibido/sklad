@@ -1,5 +1,5 @@
 namespace :import do
-  desc "Import from sklad.xlsx"
+  desc 'Import from sklad.xlsx'
   task product_from_sklad: :environment do
     abort "Отключил, чтобы не прогнать по-запаре"
 
@@ -62,10 +62,12 @@ namespace :import do
   end
 
 
-  desc "Import from *_*.log"
+  desc 'Import from *_*.log'
   task from_log: :environment do
-    Dir["/Volumes/macOS/_sunlab/work/Sklad/Log/*_*.log"].each do |filename|
+    Dir['/Users/kj/_sunlab/work/Sklad/Log/####-#.log'].each do |filename|
       shop = filename[-5]
+
+      puts filename
 
       File.readlines(filename, chomp: true).each do |line|
         # получить переменные

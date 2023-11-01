@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_31_114130) do
+ActiveRecord::Schema.define(version: 2023_11_01_182657) do
+
+  create_table "cash_registers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "countries", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "disco_cards", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -44,6 +56,11 @@ ActiveRecord::Schema.define(version: 2023_10_31_114130) do
     t.integer "shop_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "disco_card_id", null: false
+    t.integer "cash_register_id", null: false
+    t.decimal "rest_before", precision: 10, scale: 2, null: false
+    t.index ["cash_register_id"], name: "index_operations_on_cash_register_id"
+    t.index ["disco_card_id"], name: "index_operations_on_disco_card_id"
     t.index ["operation_type_id"], name: "index_operations_on_operation_type_id"
     t.index ["product_id"], name: "index_operations_on_product_id"
     t.index ["shop_id"], name: "index_operations_on_shop_id"
@@ -102,6 +119,8 @@ ActiveRecord::Schema.define(version: 2023_10_31_114130) do
     t.index ["name"], name: "index_users_on_name", unique: true
   end
 
+  add_foreign_key "operations", "cash_registers"
+  add_foreign_key "operations", "disco_cards"
   add_foreign_key "operations", "operation_types"
   add_foreign_key "operations", "products"
   add_foreign_key "operations", "shops"
