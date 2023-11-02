@@ -70,22 +70,23 @@ namespace :import do
 
       File.readlines(filename, chomp: true).each do |line|
         arr = line.split(',')
-        debugger
+
         product = Product.find(arr[1])
         operation_type = OperationType.find(arr[5])
         user = User.find(arr[6])
-        disko_card = DiscoCard.find_or_create_by!(id: arr[7])
+        disco_card = DiscoCard.find_or_create_by!(id: arr[7])
         cash_register = CashRegister.find_or_create_by!(id: arr[8])
 
         operation = Operation.new
-        operation.created = DateTime.parse(operation[0])
+        operation.date_created = DateTime.parse(arr[0])
         operation.product = product
         operation.quantity = arr[2].to_f
         operation.sale_price = arr[3].to_f
         operation.discount_percent = arr[4].to_i
         operation.operation_type = operation_type
         operation.user = user
-        operation.disco_card = disko_card
+        operation.disco_card = disco_card
+        debugger
         operation.cash_register = cash_register
         operation.rest_before = arr[9].to_f
         operation.shop = shop
