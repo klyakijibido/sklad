@@ -61,9 +61,20 @@ namespace :import do
     Rails.logger.error "закончил в #{Time.now}"
   end
 
+  desc 'Import replays from txt'
+  task replays_from_txt: :environment do
+    File.readlines(Rails.root.join("db", "txt", "replays.txt"), chomp: true).each do |line|
+      arr = line.split(',')
+      product = Product.find(arr[0].to_i)
+      puts product
+      product_copy = product.dup
+      product_copy.id = arr[1].to_i
+      product_copy.save
+    end
+  end
 
-  desc 'Import from *_*.log'
-  task from_log: :environment do
+  desc 'Import Operation from *_*.log'
+  task operation_from_log: :environment do
     Dir['/Users/kj/_sunlab/work/Sklad/Log/????-?.log'].each do |filename|
       shop = Shop.find(filename[-5].to_i)
       puts filename
@@ -72,6 +83,10 @@ namespace :import do
         arr = line.split(',')
 
         product = Product.find(arr[1])
+        if product.nil?
+          puts arr[1]
+          next
+        end
         operation_type = OperationType.find(arr[5])
         user = User.find(arr[6])
         disco_card = DiscoCard.find_or_create_by!(id: arr[7])
@@ -86,16 +101,15 @@ namespace :import do
         operation.operation_type = operation_type
         operation.user = user
         operation.disco_card = disco_card
-        debugger
         operation.cash_register = cash_register
         operation.rest_before = arr[9].to_f
         operation.shop = shop
 
-        # сохранить
+        operation.save
       end
 
 
-      abort "как-то так"
+      # abort "как-то так"
     end
   end
 
