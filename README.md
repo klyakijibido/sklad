@@ -40,7 +40,7 @@ rails g migration RenameCreatedInOperation
 rm app/models/discount_card.rb
 rails generate migration DropDiscount_cards
 
-rails g model BadProduct description
+rails g model BadProduct description repit:integer
 
 
 

@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_02_122743) do
+ActiveRecord::Schema.define(version: 2023_11_02_145902) do
+
+  create_table "bad_products", force: :cascade do |t|
+    t.string "description"
+    t.integer "repit"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "cash_registers", force: :cascade do |t|
     t.string "name"
