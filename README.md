@@ -1,4 +1,20 @@
-# README
+CodE; 
+Kol; 
+Price; 
+Skidka; 
+CodOperazii; 
+User; 
+nDiscountCard; 
+kkmSerialNumber4; 
+ReadOstatok
+
+0 - Date_Now; 
+
+Date_Now; CodE; Kol; Price; Skidka; CodOperazii; locUin; nDiscountCard; kkmSerialNumber4; ReadOstatok
+
+
+sklad_db_schema.driwio - сохраняется в гуглдиске
+
 
 rails _6.1.7.4_ new sklad  -d sqlite3 --skip-sprockets --skip-spring --skip-listen --skip-turbolinks --skip-jbuilder -T --skip-bootsnap
 
@@ -14,10 +30,14 @@ rails g model DiscountCard name
 rails g model User name
 rails g model OperationType name multiplier_cash:integer multiplier_quantity:integer
 rails g model Operation created:datetime product:references quantity:decimal sale_price:decimal discount_percent:integer operation_type:references user:references shop:references
+
 rails g model DiscoCard name
 rails g model CashRegister name
+rails g migration AddDetailsToOperation disco_card:references cash_register:references rest_before:decimal
 
-rails g migration AddDetailsToOperation disco_card:references cash_register_id:references rest_before:decimal
+rails g migration RenameCreatedInOperation
+
+
 
 
 
