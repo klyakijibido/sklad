@@ -42,17 +42,6 @@ rails generate migration DropDiscount_cards
 
 rails g model BadProduct description repit:integer
 
-
-
-
-
-be rails g scaffold_controller tovar show index
-rails db:migrate
-
-bundle exec rails g model user name email
-bundle exec rails g scaffold_controller user
-
-rails g migration AddTovarTypeToTovars tovar_type:references
-rails g migration AddPlantToTovars plant:references
-rails g migration AddProviderToTovars provider:references
-
+# TODO добавить уникальность по трем полям date_created, product_id, cash_register_id и может маг, т.к. cash_register_id=0 для операций изменения
+# нужно сделать для operations индекс уникальности по нескольким колонкам(дата,код,магаз)
+rails g migration AddUniqueIndexToOperations
