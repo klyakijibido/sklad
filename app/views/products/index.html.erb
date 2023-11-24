@@ -1,0 +1,4 @@
+<h3>Первые <%= @products.count %> товаров</h3>
+<% @products.each do |product| %>
+  <p><%= link_to product.id, product_path(product) %></p>
+<% end %>

@@ -1,2 +1,7 @@
-<h2>Продукт № <%= @product.id %></h2>
-<p>Наименование: <%= @product.name %></p>
+<h2>код <%= @product.id %></h2>
+<p>наимен: <%= @product.name %></p>
+<p>артикуль: <%= @product.art %></p>
+<p>разделко: <%= @product.razd %></p>
+<p>це_на: <%= @product.price %></p>
+
+<p><%= link_to 'взад', products_path %></p>
