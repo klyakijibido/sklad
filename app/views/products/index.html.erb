@@ -1,4 +1,11 @@
-<h3>Первые <%= @products.count %> товаров</h3>
+
+<form action="\products" method="get">
+  <p><textarea name="query"></textarea> </p>
+  <p><input type="submit" value="найти"></p>
+</form>
+
+<h3>найдено <%= @products.count %> продуктов:</h3>
+
 <% @products.each do |product| %>
-  <p><%= link_to product.id, product_path(product) %></p>
+  <p><%= link_to product.name, product_path(product) %></p>
 <% end %>

@@ -4,6 +4,10 @@ class ProductsController < ApplicationController
   end
 
   def index
-    @products = Product.first(30)
+    if params[:query].present?
+      @products = Product.where("name LIKE ?", "%#{params[:query]}%")
+    else
+      @products = Product.first(30)
+    end
   end
 end
