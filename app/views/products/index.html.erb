@@ -1,11 +1,14 @@
-
-<form action="\products" method="get">
-  <p><textarea name="query"></textarea> </p>
-  <p><input type="submit" value="найти"></p>
-</form>
-
-<h3>найдено <%= @products.count %> продуктов:</h3>
-
-<% @products.each do |product| %>
-  <p><%= link_to product.name, product_path(product) %></p>
+<%#= form_with url: "/products", method: :get do |form| %>
+<%= form_with model: @product do |form| %>
+  <%= form.label :query, "Search for:" %>
+  <%= form.text_field :query %>
+  <%= form.submit "Search", class: 'btn btn-secondary' %>
 <% end %>
+
+<div class="row mt-5">
+  <h3>найдено <%= @products.count %> продуктов:</h3>
+
+  <% @products.each do |product| %>
+    <p><%= link_to product.name, product_path(product) %></p>
+  <% end %>
+</div>
