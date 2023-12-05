@@ -45,3 +45,5 @@ rails g model BadProduct description repit:integer
 # TODO добавить уникальность по трем полям date_created, product_id, cash_register_id и может маг, т.к. cash_register_id=0 для операций изменения
 # нужно сделать для operations индекс уникальности по нескольким колонкам(дата,код,магаз)
 rails g migration AddUniqueIndexToOperations
+
+если не собираются ассеты: bin/webpack
