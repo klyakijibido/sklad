@@ -1,5 +1,5 @@
-<%#= form_with url: "/products", method: :get do |form| %>
-<%= form_with model: @product do |form| %>
+<%= form_with url: "/products", method: :get do |form| %>
+<%#= form_with model: @product do |form| %>
   <%= form.label :query, "Search for:" %>
   <%= form.text_field :query %>
   <%= form.submit "Search", class: 'btn btn-secondary' %>
