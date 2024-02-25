@@ -9,6 +9,6 @@
   <h3>найдено <%= @products.count %> продуктов:</h3>
 
   <% @products.each do |product| %>
-    <p><%= link_to product.name, product_path(product) %></p>
+    <p><%= link_to "#{product.id}. #{product.name}", product_path(product) %></p>
   <% end %>
 </div>

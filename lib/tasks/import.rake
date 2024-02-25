@@ -64,25 +64,40 @@ namespace :import do
   desc 'Import ean13 from sklad.xlsx'
   task ean13_from_sklad: :environment do
     # abort "Отключил, чтобы не прогнать по-запаре"
-
     Rails.logger.error "начал в #{Time.now}"
 
     sheet = Roo::Excelx.new("/Users/kj/Downloads/sklad.xlsm")
+    # sheet = Roo::Excelx.new("/Users/kj/Downloads/sklad_sample.xlsm")
+
     sheet.default_sheet = 'Товар'
-    row = 0
-    codes = 0
+    new_codes = 0
 
-    sheet.each(code: 'Код', ean13: 'штрихкод') do |hash|
-      row += 1
-      next if hash[:code].nil?
-      codes += 1
-      debugger
+    sheet.each_with_index(code: 'Код', ean13: 'штрихкод') do |hash, index|
+      puts index.to_s if index % 1000 == 1
+      next if index == 0 || hash[:ean13].nil? || (hash[:ean13].is_a?(String) && hash[:ean13].empty?)
+
+      # puts (index + 1).to_s
+
+      Product.where(id: index + 1).first.tap do |product|
+        if product.new_record?
+          new_codes += 1
+          next
+        end
+
+        debugger unless product.id == index + 1
+
+        product.ean13 = hash[:ean13]
+
+        begin
+          product.save!
+        rescue ActiveRecord::RecordInvalid => error
+          debugger
+        end
+      end
     end
+
+    puts "new_codes: #{new_codes}"
     sheet.close
-
-    puts row
-    puts codes
-
     Rails.logger.error "закончил в #{Time.now}"
   end
 
