@@ -1,5 +1,5 @@
 namespace :import do
-  desc 'Import from sklad.xlsx'
+  desc 'Import products from sklad.xlsx'
   task product_from_sklad: :environment do
     abort "Отключил, чтобы не прогнать по-запаре"
 
@@ -60,6 +60,32 @@ namespace :import do
     sheet.close
     Rails.logger.error "закончил в #{Time.now}"
   end
+
+  desc 'Import ean13 from sklad.xlsx'
+  task ean13_from_sklad: :environment do
+    # abort "Отключил, чтобы не прогнать по-запаре"
+
+    Rails.logger.error "начал в #{Time.now}"
+
+    sheet = Roo::Excelx.new("/Users/kj/Downloads/sklad.xlsm")
+    sheet.default_sheet = 'Товар'
+    row = 0
+    codes = 0
+
+    sheet.each(code: 'Код', ean13: 'штрихкод') do |hash|
+      row += 1
+      next if hash[:code].nil?
+      codes += 1
+      debugger
+    end
+    sheet.close
+
+    puts row
+    puts codes
+
+    Rails.logger.error "закончил в #{Time.now}"
+  end
+
 
   desc 'Import replays from txt'
   task replays_from_txt: :environment do
@@ -157,6 +183,4 @@ namespace :import do
     end
     sheet.close
   end
-
-
 end
