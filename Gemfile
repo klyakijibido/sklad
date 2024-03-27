@@ -8,9 +8,12 @@ gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 5.0'
 gem 'webpacker', '~> 5.0'
 gem "roo", "~> 2.10.0"
+gem 'dotenv-rails'
+gem 'httparty'
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
+  # gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :development do
